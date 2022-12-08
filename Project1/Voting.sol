@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.17;
 
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 error Voting__WrongStatus();
 error Voting__VoterNotRegistered();
@@ -43,7 +43,7 @@ contract Voting is Ownable {
     event ProposalRegistered(uint256 proposalId);
     event Voted(address voter, uint256 proposalId);
 
-    modifier onlyVotingStatus(WorkflowStatus _status) {
+    modifier onlyStatus(WorkflowStatus _status) {
         if (status != _status) {
             revert Voting__WrongStatus();
         }
@@ -71,7 +71,7 @@ contract Voting is Ownable {
     function registerVoter(address _voter)
         external
         onlyOwner
-        onlyVotingStatus(WorkflowStatus.RegisteringVoters)
+        onlyStatus(WorkflowStatus.RegisteringVoters)
     {
         whitelistedVoters[_voter].isRegistered = true;
         emit VoterRegistered(_voter);
@@ -82,7 +82,7 @@ contract Voting is Ownable {
     function registerProposal(string memory _description)
         external
         onlyWhitelisted
-        onlyVotingStatus(WorkflowStatus.ProposalsRegistrationStarted)
+        onlyStatus(WorkflowStatus.ProposalsRegistrationStarted)
     {
         Proposal memory proposal = Proposal(_description, 0);
         uint256 proposalId = proposals.length;
@@ -95,7 +95,7 @@ contract Voting is Ownable {
     function voteForProposal(uint256 _proposalId)
         external
         onlyWhitelisted
-        onlyVotingStatus(WorkflowStatus.VotingSessionStarted)
+        onlyStatus(WorkflowStatus.VotingSessionStarted)
     {
         if (_proposalId >= proposals.length) {
             revert Voting__ProposalDoesNotExist();
@@ -113,7 +113,7 @@ contract Voting is Ownable {
     function countVotes()
         external
         onlyOwner
-        onlyVotingStatus(WorkflowStatus.VotingSessionEnded)
+        onlyStatus(WorkflowStatus.VotingSessionEnded)
     {
         uint256 tempWinningId;
         for (uint256 currentId = 1; currentId < proposals.length; currentId++) {
@@ -132,7 +132,7 @@ contract Voting is Ownable {
     function getWinner()
         external
         view
-        onlyVotingStatus(WorkflowStatus.VotesTallied)
+        onlyStatus(WorkflowStatus.VotesTallied)
         returns (Proposal memory)
     {
         return proposals[winningProposalId];
