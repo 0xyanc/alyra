@@ -129,6 +129,7 @@ contract Voting is Ownable {
     }
 
     /// Get the winning proposal
+    /// @return the winning proposal
     function getWinner()
         external
         view
