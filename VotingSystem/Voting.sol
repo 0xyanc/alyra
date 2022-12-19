@@ -57,7 +57,7 @@ contract Voting is Ownable {
     }
 
     /// Go to next WorkflowStatusChange status
-    function goToNextStep() external onlyOwner {
+    function goToNextStep() public onlyOwner {
         if (status == type(WorkflowStatus).max) {
             revert Voting__AlreadyAtLastStep();
         }
@@ -125,7 +125,7 @@ contract Voting is Ownable {
             }
         }
         winningProposalId = tempWinningId;
-        this.goToNextStep();
+        goToNextStep();
     }
 
     /// Get the winning proposal
