@@ -7,9 +7,7 @@ module.exports = async({ getNamedAccounts, deployments }) => {
     const { deployer } = await getNamedAccounts()
 
     log("--------------------------------------")
-    console.log(`-------- Arguments: ${arguments} --------`)
     let args = [] 
-    console.log(`-------- Arguments: ${arguments} --------`)
     const AlyraIsERC20 = await deploy("AlyraIsERC20", {
         from: deployer,
         args: args,

@@ -2,6 +2,8 @@ require("@nomicfoundation/hardhat-toolbox")
 require("dotenv").config()
 require("@nomiclabs/hardhat-etherscan")
 require("hardhat-deploy");
+require("hardhat-gas-reporter")
+require("solidity-coverage")
 
 const PK = process.env.PK || "";
 const ALCHEMY_MUMBAI = process.env.ALCHEMY_MUMBAI || "";
@@ -47,5 +49,8 @@ module.exports = {
       default: 0,
       1: 0,
     }
+  },
+  gasReporter: {
+    enabled: true
   }
 };
