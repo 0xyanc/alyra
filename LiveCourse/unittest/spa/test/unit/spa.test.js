@@ -133,8 +133,7 @@ describe("Units tests of Spa smart contract", function () {
         it("should match the criterias, return true and set the found animal isAdopted to true", async function () {
             const deployerAddress = await deployer.getAddress()
 
-            const adopted = await spa.adoptIfMax("doberman", 250, 5)
-            assert.equal(adopted.true)
+            await spa.adoptIfMax("doberman", 250, 5)
 
             const animal = await spa.get(1)
             assertAnimal(animal, "doberman", 200, 4, true)
@@ -145,20 +144,20 @@ describe("Units tests of Spa smart contract", function () {
             expect(adopted).to.emit(spa, "AnimalAdopted").withArgs(1, deployerAddress)
         })
         it("should not match the size criteria and return false", async function () {
-            const adopted = await spa.adoptIfMax("doberman", 199, 5)
-            assert.equal(adopted.false)
+            const adopted = await spa.callStatic.adoptIfMax("doberman", 199, 5)
+            assert.equal(adopted, false)
         })
         it("should not match the age criteria and return false", async function () {
-            const adopted = await spa.adoptIfMax("doberman", 200, 2)
-            assert.equal(adopted.false)
+            const adopted = await spa.callStatic.adoptIfMax("doberman", 200, 2)
+            assert.equal(adopted, false)
         })
         it("should not match the race criteria and return false", async function () {
-            const adopted = await spa.adoptIfMax("corgi", 200, 2)
-            assert.equal(adopted.false)
+            const adopted = await spa.callStatic.adoptIfMax("corgi", 200, 2)
+            assert.equal(adopted, false)
         })
         it("should match the criteria and return false because already adopted", async function () {
-            const adopted = await spa.adoptIfMax("labrador", 199, 5)
-            assert.equal(adopted.false)
+            const adopted = await spa.callStatic.adoptIfMax("labrador", 199, 5)
+            assert.equal(adopted, false)
         })
     })
 
