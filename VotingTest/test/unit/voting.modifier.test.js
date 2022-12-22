@@ -55,7 +55,7 @@ describe("Unit tests of modifiers in Voting smart contract", function () {
             await deployments.fixture(["voting"])
             voting = await ethers.getContract("Voting")
         })
-        it("should revert if the sender tries add a proposal while not being a voter", async function () {
+        it("should revert if the sender tries to add a proposal while not being a voter", async function () {
             await expect(voting.addProposal("desc"))
                 .to.be.revertedWith("You're not a voter")
         })
@@ -63,7 +63,13 @@ describe("Unit tests of modifiers in Voting smart contract", function () {
             await expect(voting.setVote(1))
                 .to.be.revertedWith("You're not a voter")
         })
+        it("should revert if the sender tries to get a voter while not being a voter", async function () {
+            await expect(voting.getVoter(await deployer.getAddress()))
+                .to.be.revertedWith("You're not a voter")
+        })
+        it("should revert if the sender tries to get a proposal while not being a voter", async function () {
+            await expect(voting.getOneProposal(0))
+                .to.be.revertedWith("You're not a voter")
+        })
     })
-
-
 })

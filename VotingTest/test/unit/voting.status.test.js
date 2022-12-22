@@ -26,11 +26,12 @@ describe("Unit tests of WorkflowStatus management Voting smart contract", functi
         })
         it("should change status to ProposalsRegistrationStarted=1 and add a GENESIS proposal if the admin tries to start the proposal registering phase ", async function () {
             const tx = await voting.startProposalsRegistering()
+
             assert.equal(await voting.workflowStatus(), 1)
             const genesis = await voting.getOneProposal(0)
             assert.equal(genesis.description, "GENESIS")
             assert.equal(genesis.voteCount, 0)
-            expect(tx).to.emit("WorkflowStatusChange").withArgs(0, 1)
+            expect(tx).to.emit(voting, "WorkflowStatusChange").withArgs(0, 1)
         })
         it("should revert if the admin tries to end the proposal registering phase", async function () {
             await expect(voting.endProposalsRegistering())
@@ -72,7 +73,7 @@ describe("Unit tests of WorkflowStatus management Voting smart contract", functi
         it("should end the proposal registering phase", async function () {
             const tx = await voting.endProposalsRegistering()
             assert.equal(await voting.workflowStatus(), 2)
-            expect(tx).to.emit("WorkflowStatusChange").withArgs(1, 2)
+            expect(tx).to.emit(voting, "WorkflowStatusChange").withArgs(1, 2)
         })
         it("should revert if the admin tries to start the voting session phase", async function () {
             await expect(voting.startVotingSession())
@@ -115,7 +116,7 @@ describe("Unit tests of WorkflowStatus management Voting smart contract", functi
         it("should start the voting session phase", async function () {
             const tx = await voting.startVotingSession()
             assert.equal(await voting.workflowStatus(), 3)
-            expect(tx).to.emit("WorkflowStatusChange").withArgs(2, 3)
+            expect(tx).to.emit(voting, "WorkflowStatusChange").withArgs(2, 3)
         })
         it("should revert if the admin tries to end the voting session phase", async function () {
             await expect(voting.endVotingSession())
@@ -163,7 +164,7 @@ describe("Unit tests of WorkflowStatus management Voting smart contract", functi
         it("should end the voting session phase", async function () {
             const tx = await voting.endVotingSession()
             assert.equal(await voting.workflowStatus(), 4)
-            expect(tx).to.emit("WorkflowStatusChange").withArgs(3, 4)
+            expect(tx).to.emit(voting, "WorkflowStatusChange").withArgs(3, 4)
         })
         it("should revert if the admin tries to tally votes", async function () {
             await expect(voting.tallyVotes())
@@ -208,7 +209,7 @@ describe("Unit tests of WorkflowStatus management Voting smart contract", functi
         it("should tally the votes and change the workflow status", async function () {
             const tx = await voting.tallyVotes()
             assert.equal(await voting.workflowStatus(), 5)
-            expect(tx).to.emit("WorkflowStatusChange").withArgs(4, 5)
+            expect(tx).to.emit(voting, "WorkflowStatusChange").withArgs(4, 5)
         })
         it("should revert if the status is not in RegisteringVoters", async function () {
             await expect(voting.addVoter(voterAddress))

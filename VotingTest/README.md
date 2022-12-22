@@ -29,6 +29,6 @@ Run this command to check the coverage:
 The expected output is:
 | File  | % Stmts | % Branch | % Funcs | % Lines | Uncovered Lines | 
 |--|--|--|--|--|--|
-| contracts/ | 100 | 95.83 | 100 | 100 | |
-| Voting.sol | 100 | 95.83 | 100 | 100 | |
-| All files | 100 | 95.83 | 100 | 100 | |
+| contracts/ | 100 | 100 | 100 | 100 | |
+| Voting.sol | 100 | 100 | 100 | 100 | |
+| All files | 100 | 100 | 100 | 100 | |
