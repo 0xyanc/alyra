@@ -133,7 +133,7 @@ describe("Units tests of Spa smart contract", function () {
         it("should match the criterias, return true and set the found animal isAdopted to true", async function () {
             const deployerAddress = await deployer.getAddress()
 
-            await spa.adoptIfMax("doberman", 250, 5)
+            const adopted = await spa.adoptIfMax("doberman", 250, 5)
 
             const animal = await spa.get(1)
             assertAnimal(animal, "doberman", 200, 4, true)
@@ -189,7 +189,7 @@ describe("Units tests of Spa smart contract", function () {
             assert.equal(animal.isAdopted, true)
             const adoptedAnimal = await spa.getAdoption(deployerAddress)
             assertAnimal(adoptedAnimal, "doberman", 250, 10, true)
-            expect(adopting).to.emit("AnimalAdopted").withArgs(1, deployerAddress)
+            expect(adopting).to.emit(spa, "AnimalAdopted").withArgs(1, deployerAddress)
         })
         it("should adopt a small corgi", async function () {
             const adoptingAddress = await accounts[1].getAddress()
@@ -198,7 +198,7 @@ describe("Units tests of Spa smart contract", function () {
             assert.equal(animal.isAdopted, true)
             const adoptedAnimal = await spa.getAdoption(adoptingAddress)
             assertAnimal(adoptedAnimal, "corgi", 50, 5, true)
-            expect(adopting).to.emit("AnimalAdopted").withArgs(2, adoptingAddress)
+            expect(adopting).to.emit(spa, "AnimalAdopted").withArgs(2, adoptingAddress)
         })
     })
 
