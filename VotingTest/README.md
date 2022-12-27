@@ -13,7 +13,7 @@ The tests are written is the *test/unit* folder and are split into categories in
 - **workflow**: happy path of the expected behaviour of the smart contract
 
 ##  Implementation Details
-**beforeEach** is used to have a fresh state of the smart contract for each test.
+**beforeEach** is used to have a fresh and appropriate state of the smart contract for each test to run correctly.
 
 **before** is used for the workflow rundown test suite so we can see how the smart contract works.
 
