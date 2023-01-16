@@ -35,12 +35,25 @@ contract Voting is Ownable {
     uint256 private winningProposalId;
     WorkflowStatus public status;
 
+    /// @notice Event logging a registed voter
+    /// @param voterAddress Address of the voter
     event VoterRegistered(address voterAddress);
+
+    /// @notice Event logging the change in the workflow status
+    /// @param previousStatus Previous workflow status
+    /// @param newStatus New workflow status
     event WorkflowStatusChange(
         WorkflowStatus previousStatus,
         WorkflowStatus newStatus
     );
+
+    /// @notice Event logging the registration of a proposal
+    /// @param proposalId id of the registered proposal
     event ProposalRegistered(uint256 proposalId);
+
+    /// @notice Event logging that a voter voted on a proposal
+    /// @param voter Address of the voter
+    /// @param proposalId The proposal id that was voted on
     event Voted(address voter, uint256 proposalId);
 
     modifier onlyStatus(WorkflowStatus _status) {
@@ -56,7 +69,8 @@ contract Voting is Ownable {
         _;
     }
 
-    /// Go to next WorkflowStatusChange status
+    /// @notice Go to next WorkflowStatusChange status
+    /// @dev Generic function to change the workflow status, to avoid writing many similar functions doing the same thing
     function goToNextStep() public onlyOwner {
         if (status == type(WorkflowStatus).max) {
             revert Voting__AlreadyAtLastStep();
@@ -66,7 +80,7 @@ contract Voting is Ownable {
         emit WorkflowStatusChange(previousStatus, status);
     }
 
-    /// Whitelist a Voter
+    /// @notice Whitelist a Voter
     /// @param _voter Voter to add to the whitelist
     function registerVoter(address _voter)
         external
@@ -77,7 +91,7 @@ contract Voting is Ownable {
         emit VoterRegistered(_voter);
     }
 
-    /// Voter can register their proposals
+    /// @notice Voter can register their proposals
     /// @param _description description of the proposal
     function registerProposal(string memory _description)
         external
@@ -90,7 +104,7 @@ contract Voting is Ownable {
         emit ProposalRegistered(proposalId);
     }
 
-    /// Voters vote for their preferred proposal
+    /// @notice Voters vote for their preferred proposal
     /// @param _proposalId id of the proposal to vote for
     function voteForProposal(uint256 _proposalId)
         external
@@ -109,7 +123,7 @@ contract Voting is Ownable {
         emit Voted(msg.sender, _proposalId);
     }
 
-    /// Admin counts the votes
+    /// @notice Admin counts the votes
     function countVotes()
         external
         onlyOwner
@@ -128,8 +142,8 @@ contract Voting is Ownable {
         goToNextStep();
     }
 
-    /// Get the winning proposal
-    /// @return the winning proposal
+    /// @notice Get the winning proposal
+    /// @return proposal The winning proposal
     function getWinner()
         external
         view
